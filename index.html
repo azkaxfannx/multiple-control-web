@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belajar Multiple Control Browser</title>
+    <style>
+      html {
+        background-color: gray;
+        padding: 0;
+        margin: 0;
+      }
+      #circle1 {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: whitesmoke;
+        border-radius: 50%;
+      }
+      #circle2 {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: aqua;
+        border-radius: 50%;
+      }
+      #circle3 {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: goldenrod;
+        border-radius: 50%;
+      }
+      #circle4 {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: red;
+        border-radius: 50%;
+      }
+      #circle5 {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: black;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="circle1"></div>
+    <div id="circle2"></div>
+    <div id="circle3"></div>
+    <div id="circle4"></div>
+    <div id="circle5"></div>
+
+    <script>
+      const circleChannel = new BroadcastChannel("circleChannel");
+      const circle1 = document.getElementById("circle1"),
+        circle2 = document.getElementById("circle2"),
+        circle3 = document.getElementById("circle3"),
+        circle4 = document.getElementById("circle4"),
+        circle5 = document.getElementById("circle5");
+
+      function moveCircle1(circle, x, y) {
+        circle.style.left = x + "px";
+        circle.style.right = "";
+        circle.style.top = y + "px";
+      }
+
+      function moveCircle2(circle, x, y) {
+        circle.style.right = x + "px";
+        circle.style.left = "";
+        circle.style.top = y + "px";
+      }
+
+      function circleMovement(event) {
+        const x = event.clientX,
+          y = event.clientY;
+
+        moveCircle1(circle1, x, y);
+
+        setTimeout(() => {
+          moveCircle1(circle2, x, y);
+        }, 100);
+
+        setTimeout(() => {
+          moveCircle1(circle3, x, y);
+        }, 200);
+
+        setTimeout(() => {
+          moveCircle1(circle4, x, y);
+        }, 300);
+
+        setTimeout(() => {
+          moveCircle1(circle5, x, y);
+        }, 400);
+
+        circleChannel.postMessage({ x, y });
+      }
+
+      circleChannel.onmessage = (event) => {
+        const { x, y } = event.data;
+
+        moveCircle2(circle1, x, y);
+
+        setTimeout(() => {
+          moveCircle2(circle2, x, y);
+        }, 100);
+
+        setTimeout(() => {
+          moveCircle2(circle3, x, y);
+        }, 200);
+
+        setTimeout(() => {
+          moveCircle2(circle4, x, y);
+        }, 300);
+
+        setTimeout(() => {
+          moveCircle2(circle5, x, y);
+        }, 400);
+      };
+
+      addEventListener("mousemove", circleMovement);
+    </script>
+  </body>
+</html>
